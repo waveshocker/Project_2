@@ -8,6 +8,10 @@ module.exports = function(sequelize, DataTypes) {
           type: DataTypes.STRING,
           allowNull: false 
       },
+      bike_capacity: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       longitude: {
           type: DataTypes.FLOAT(12, 10),
           allowNull: false
