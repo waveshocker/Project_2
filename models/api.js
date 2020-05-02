@@ -1,4 +1,3 @@
-	
 const
 https = require("https"),
 packageName = "bicycle-parking-high-capacity-outdoor";
