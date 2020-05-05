@@ -11,13 +11,19 @@ module.exports = function(sequelize, DataTypes) {
         freezeTableName: true
     });
   
-    Post.associate = function(models) {
+    Comment.associate = function(models) {
       // We're saying that a comment belongs to a bikerack      
-      Post.belongsTo(models.Bikerack, {
+      Comment.belongsTo(models.Bikerack, {
         foreignKey: {
           allowNull: false
         }
       });
+
+      Comment.belongsTo(models.User, {
+        foreignKey: {
+          allowNull: false
+        }
+      })
     };
   
     return Comment;
