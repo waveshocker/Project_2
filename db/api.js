@@ -50,7 +50,7 @@ https.get(`https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastor
 getPackage.then(package => {
 // get the datastore resources for the package
 let datastoreResources = package["resources"].filter(r => r.datastore_active);
-db.sequelize.sync({ force: true });
+db.sequelize.sync({ force: false });
 
 // retrieve the first datastore resource as an example
 getDatastoreResource(datastoreResources[0])
@@ -60,14 +60,20 @@ getDatastoreResource(datastoreResources[0])
         //log api data into database      
 
         for(i=0; i < resource.length; i++) {
-            console.log(resource[i]);
-            db.Bikerack.create({
+            db.Bikerack.findOrCreate({
+                where: {
                 _id: resource[i]._id,
                 address: resource[i].ADDRESS_FULL,
                 bike_capacity: resource[i].BICYCLE_CAPACITY,
                 longitude: resource[i].LONGITUDE,
                 latitude: resource[i].LATITUDE
-            });
+            }, defaults: {
+                _id: resource[i]._id,
+                address: resource[i].ADDRESS_FULL,
+                bike_capacity: resource[i].BICYCLE_CAPACITY,
+                longitude: resource[i].LONGITUDE,
+                latitude: resource[i].LATITUDE
+            }});
         }
     })
     .catch(error => {
