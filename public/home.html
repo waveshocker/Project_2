@@ -26,7 +26,36 @@
       </div>
     </div>
   </div>
+  <div id="map"></div>
 
+  <script>
+    const loc = {lat: 43.6453473, lng: -79.4296353}
+  
+    function setCurrentPosition(position) {
+      loc.lat = position.coords.latitude;
+      loc.lng = position.coords.longitude;
+    }
+
+    function getCurrentPosition() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(setCurrentPosition);
+      } 
+    }
+
+    // Initialize and add the map
+    function initMap() {
+
+      getCurrentPosition();
+      // The map, centered at Uluru
+      var map = new google.maps.Map(
+          document.getElementById('map'), {zoom: 14, center:loc});
+      // The marker, positioned at Uluru
+      //var marker = new google.maps.Marker({position: uluru, map: map});
+    }
+        </script>
+
+  
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCjcIFpFhSIYjZCOl4WnzOGLhqNqWxH9k&callback=initMap"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="js/home.js"></script>
 
