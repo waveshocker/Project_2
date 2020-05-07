@@ -1,0 +1,10 @@
+form.signup,
+form.login {
+  margin-top: 50px;
+}
+
+#map{
+  height: 400px;
+  width: 600px;
+  background-color: gray;
+}
