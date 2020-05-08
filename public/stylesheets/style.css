@@ -8,6 +8,13 @@ form.login {
   z-index: 5;
 }
 
+#pac-input{
+  width: 30%;
+  margin-top: 11px;
+}
+
+
+
 #map{
   height: 90vh;
   width: 100vw;

@@ -21,6 +21,35 @@ function getCurrentPosition() {
   } 
 }
 
+function getContentString(address, bike_capacity, rating, comment_count){
+  return `<div id='content'>
+    <h3>${address}</h3>
+    <p>Capacity: ${bike_capacity}</p>
+    <p>Rating: ${rating}</p>
+    <p>Comments: ${comment_count}</p>
+    <p><button class="button small" data-open="commentsModal">Click me for a modal</button><p>
+  </div>
+  `
+}
+
+function addBikeRackMarkers(map){
+  //ajax call here
+
+  var infowindow = new google.maps.InfoWindow({
+    content: getContentString("123 Test St.",8,3.5,15)
+  });
+
+  let marker = new google.maps.Marker({
+    position: loc,
+    map: map,
+    title: 'Address'
+  });
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });  
+}
+
+
 function initMap() {
   
   getCurrentPosition();
@@ -79,6 +108,9 @@ function initMap() {
         title: place.name,
         position: place.geometry.location
       }));
+
+      // Add custom markets
+      addBikeRackMarkers(map)
 
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
