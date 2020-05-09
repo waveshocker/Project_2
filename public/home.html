@@ -5,9 +5,9 @@
   <title>Bike Parking</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://kit.fontawesome.com/c3db199c96.js" crossorigin="anonymous"></script>
   <link href="stylesheets/reset.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css" integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js" integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
   <link href="stylesheets/style.css" rel="stylesheet">
 </head>
 
@@ -20,34 +20,41 @@
     </div>
     <div class="top-bar-right">
       <ul class="menu">
-        <li><p><button class="button small" data-open="commentsModal">Test Modal</button><p></p></li>
-        <li><input type="search" placeholder="Search"></li>
-        <li><button type="button" class="button">Search</button></li>
-        <a class="navbar-brand" href="/logout">Logout</a>
+        <li><a class="navbar-brand" href="/logout">Logout</a></li>
+        <button type="button" class="button" data-toggle="results-list">Results List</button>
       </ul>
     </div>
   </div>
 
   <div class="grid-container-fluid">
-    <input id="pac-input" class="controls" type="text" placeholder="Enter You Destination">
-    <div id="map"></div>
+    <div class="off-canvas-wrapper">
+      <div class="off-canvas-absolute position-right" id="results-list"
+           data-off-canvas data-transition="overlap">
+        <h4>Results</h4>
+      </div>
+      <div class="off-canvas-content" style="min-height: 300px;" data-off-canvas-content>
+        <input id="pac-input" class="controls" type="text" placeholder="Enter You Destination">
+        <div id="map"></div>
+      </div>
+    </div>
 
     <!-- Comments Modal -->
     <div class="reveal" id="commentsModal" data-reveal>
-      <h1>Awesome. I Have It.</h1>
-      <p class="lead">Your couch. It is mine.</p>
-      <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+      <h3>Stop Name</h3>
+      <h5>Star Rating</h5>
+      <a>Add Comment</a>
+      <a>Rate this Spot</a>
+
       <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-
   </div>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.6.3/js/foundation.min.js" integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="js/home.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCjcIFpFhSIYjZCOl4WnzOGLhqNqWxH9k&&libraries=places&callback=initMap" async defer ></script>
-
 </body>
 
 </html>

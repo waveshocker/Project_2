@@ -1,13 +1,17 @@
 $(document).ready(function() {
   // This file just does a GET request to figure out which user is logged in
   // and updates the HTML on the page
-  $.get("/api/user_data").then(function(data) {
-    $(".member-name").text(data.email);  
+   $(document).foundation();
 
+  $.get("/api/user_data").then(function(data) {
+    $(".member-name").text(data.email);
   });
 });
 
 const loc = {lat: 43.6453473, lng: -79.4296353}
+
+function renderStars(){}
+
 
 function setCurrentPosition(position) {
   loc.lat = position.coords.latitude;
@@ -22,32 +26,53 @@ function getCurrentPosition() {
 
 function getContentString(address, bike_capacity, rating, comment_count){
   return `<div id='content'>
-    <h3>${address}</h3>
+    <h5 class="info-address">${address}</h5>
+    <span class="display-inline-block">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+        <i class="far fa-star"></i>
+    <span>
     <p>Capacity: ${bike_capacity}</p>
-    <p>Rating: ${rating}</p>
     <p>Comments: ${comment_count}</p>
-    <p><button class="button small" data-open="commentsModal">Click me for a modal</button><p>
+    <p><button class="button small" data-open="commentsModal">Add Review</button><p>
   </div>
   `
 }
 
-function addBikeRackMarkers(map){
-  //ajax call here
+function addBikeRackMarkers(map, markets, searched_location, bounds){
 
-  var infowindow = new google.maps.InfoWindow({
-    content: getContentString("123 Test St.",8,3.5,15)
-  });
+    translated_location = {
+        latitude: searched_location.lat(),
+        longitude: searched_location.lng()
+    }
 
-  let marker = new google.maps.Marker({
-    position: loc,
-    map: map,
-    title: 'Address'
-  });
-  marker.addListener('click', function() {
-    infowindow.open(map, marker);
-  });  
-}
+  $.get("/api/search_results", translated_location)
+    .then(function(results) {
 
+        // Create a marker for each parking spot.
+        results.forEach(result => {
+
+            // Add map market and info window for each spot
+            let marker = new google.maps.Marker({
+                position: new google.maps.LatLng(result.lat, result.lng),
+                map: map,
+                title: result.address
+              });
+
+              // Generate marker
+              marker.addListener('click', function() {
+                  let infowindow = new google.maps.InfoWindow({
+                      content: getContentString(result.address,8,3.5,15)
+                    });
+
+                // Attach marker to marker
+                infowindow.open(map, marker);
+              });
+         })
+    })
+  }
 
 function initMap() {
   
@@ -56,12 +81,13 @@ function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: loc,
     zoom: 14,
-    mapTypeId: 'roadmap'
+    mapTypeId: 'roadmap',
+    disableDefaultUI: true
   });
 
   // Create the search box and link it to the UI element.
-  var input = document.getElementById('pac-input');
-  var searchBox = new google.maps.places.SearchBox(input);
+  const input = document.getElementById('pac-input');
+  const searchBox = new google.maps.places.SearchBox(input);
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
   // Bias the SearchBox results towards current map's viewport.
@@ -69,7 +95,7 @@ function initMap() {
     searchBox.setBounds(map.getBounds());
   });
 
-  var markers = [];
+  const markers = [];
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
   searchBox.addListener('places_changed', function() {
@@ -83,11 +109,13 @@ function initMap() {
     markers.forEach(function(marker) {
       marker.setMap(null);
     });
-    markers = [];
 
     // For each place, get the icon, name and location.
-    var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
+    const bounds = new google.maps.LatLngBounds();
+
+// Limit to one result
+    place = places[0];
+    //places.forEach(function(place) {
       if (!place.geometry) {
         console.log("Returned place contains no geometry");
         return;
@@ -108,16 +136,16 @@ function initMap() {
         position: place.geometry.location
       }));
 
-      // Add custom markets
-      addBikeRackMarkers(map)
-
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(place.geometry.viewport);
       } else {
         bounds.extend(place.geometry.location);
       }
-    });
+
+        // Add custom markets
+        addBikeRackMarkers(map, markers, place.geometry.location, bounds)
+    //});
     map.fitBounds(bounds);
   });
 }
