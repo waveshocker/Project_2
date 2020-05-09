@@ -10,6 +10,9 @@ $(document).ready(function() {
 
 const loc = {lat: 43.6453473, lng: -79.4296353}
 
+function renderStars(){}
+
+
 function setCurrentPosition(position) {
   loc.lat = position.coords.latitude;
   loc.lng = position.coords.longitude;
@@ -23,22 +26,22 @@ function getCurrentPosition() {
 
 function getContentString(address, bike_capacity, rating, comment_count){
   return `<div id='content'>
-    <h3>${address}</h3>
+    <h5 class="info-address">${address}</h5>
+    <span class="display-inline-block">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+        <i class="far fa-star"></i>
+    <span>
     <p>Capacity: ${bike_capacity}</p>
-    <p>Rating: ${rating}</p>
     <p>Comments: ${comment_count}</p>
-    <p><button class="button small" data-open="commentsModal">Click me for a modal</button><p>
+    <p><button class="button small" data-open="commentsModal">Add Review</button><p>
   </div>
   `
 }
 
 function addBikeRackMarkers(map, markets, searched_location, bounds){
-
-    console.log(searched_location)
-
-    let infowindow = new google.maps.InfoWindow({
-        content: getContentString("123 Test St.",8,3.5,15)
-      });
 
     translated_location = {
         latitude: searched_location.lat(),
@@ -48,17 +51,23 @@ function addBikeRackMarkers(map, markets, searched_location, bounds){
   $.get("/api/search_results", translated_location)
     .then(function(results) {
 
-        // Create a marker for each place.
+        // Create a marker for each parking spot.
         results.forEach(result => {
 
-            //let result_location = result.
-
+            // Add map market and info window for each spot
             let marker = new google.maps.Marker({
-                position: loc,
+                position: new google.maps.LatLng(result.lat, result.lng),
                 map: map,
-                title: 'Address'
+                title: result.address
               });
+
+              // Generate marker
               marker.addListener('click', function() {
+                  let infowindow = new google.maps.InfoWindow({
+                      content: getContentString(result.address,8,3.5,15)
+                    });
+
+                // Attach marker to marker
                 infowindow.open(map, marker);
               });
          })
@@ -160,7 +169,7 @@ function submitLocation(data) {
 var sampleComment = {
   comment: "It's Okay",
   BikerackId: 2,
-  UserId: 3
+  UserId: 1
 };
 
 // submitComment(sampleComment);
@@ -175,12 +184,27 @@ function submitComment(data){
 var sampleRating = {
   Rating: 3,
   BikerackId: 2,
-  UserId: 3
+  UserId: 1
 };
 
-// submitRating(sampleRating);
+//submitRating(sampleRating);
 
 function submitRating(data){
   $.post("/api/rating", data, function() {    
     })
 };
+
+var sampleBikeID = {
+  BikerackId: 2
+};
+
+//pull data for bike parking location
+
+// pullBikeRating(sampleBikeID);
+
+function pullBikeRating(data){
+  $.get("/api/parkinglocation", data)
+  .then(function(results){
+    console.log(results)
+  });
+}
