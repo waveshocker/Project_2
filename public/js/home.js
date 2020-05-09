@@ -1,9 +1,10 @@
 $(document).ready(function() {
   // This file just does a GET request to figure out which user is logged in
   // and updates the HTML on the page
-  $.get("/api/user_data").then(function(data) {
-    $(".member-name").text(data.email);  
+   $(document).foundation();
 
+  $.get("/api/user_data").then(function(data) {
+    $(".member-name").text(data.email);
   });
 });
 
@@ -31,30 +32,38 @@ function getContentString(address, bike_capacity, rating, comment_count){
   `
 }
 
-function addBikeRackMarkers(map, location, bounds){
-  console.log(location)
-/*
+function addBikeRackMarkers(map, markets, searched_location, bounds){
 
-  $.get("/api/search_results", location)
-    .then(function(data) {
-      console.log(data)
+    console.log(searched_location)
+
+    let infowindow = new google.maps.InfoWindow({
+        content: getContentString("123 Test St.",8,3.5,15)
+      });
+
+    translated_location = {
+        latitude: searched_location.lat(),
+        longitude: searched_location.lng()
+    }
+
+  $.get("/api/search_results", translated_location)
+    .then(function(results) {
+
+        // Create a marker for each place.
+        results.forEach(result => {
+
+            //let result_location = result.
+
+            let marker = new google.maps.Marker({
+                position: loc,
+                map: map,
+                title: 'Address'
+              });
+              marker.addListener('click', function() {
+                infowindow.open(map, marker);
+              });
+         })
     })
-*/
-
-  var infowindow = new google.maps.InfoWindow({
-    content: getContentString("123 Test St.",8,3.5,15)
-  });
-
-  let marker = new google.maps.Marker({
-    position: loc,
-    map: map,
-    title: 'Address'
-  });
-  marker.addListener('click', function() {
-    infowindow.open(map, marker);
-  });  
-}
-
+  }
 
 function initMap() {
   
@@ -68,8 +77,8 @@ function initMap() {
   });
 
   // Create the search box and link it to the UI element.
-  var input = document.getElementById('pac-input');
-  var searchBox = new google.maps.places.SearchBox(input);
+  const input = document.getElementById('pac-input');
+  const searchBox = new google.maps.places.SearchBox(input);
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
   // Bias the SearchBox results towards current map's viewport.
@@ -77,7 +86,7 @@ function initMap() {
     searchBox.setBounds(map.getBounds());
   });
 
-  var markers = [];
+  const markers = [];
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
   searchBox.addListener('places_changed', function() {
@@ -91,11 +100,13 @@ function initMap() {
     markers.forEach(function(marker) {
       marker.setMap(null);
     });
-    markers = [];
 
     // For each place, get the icon, name and location.
-    var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
+    const bounds = new google.maps.LatLngBounds();
+
+// Limit to one result
+    place = places[0];
+    //places.forEach(function(place) {
       if (!place.geometry) {
         console.log("Returned place contains no geometry");
         return;
@@ -124,8 +135,8 @@ function initMap() {
       }
 
         // Add custom markets
-        addBikeRackMarkers(map, place, bounds)
-    });
+        addBikeRackMarkers(map, markers, place.geometry.location, bounds)
+    //});
     map.fitBounds(bounds);
   });
 }
