@@ -6,11 +6,13 @@ module.exports = function(app) {
     //require request pass in latitude as lat and longitude as lng      
     db.Bikerack.findAll({
       attributes: ['_id', 'address', 'bike_capacity', 'longitude', 'latitude',
+                  [db.sequelize.fn('COUNT', db.sequelize.col('Comments.comment')), 'CommentCount'],
                   [db.sequelize.literal("6371 * acos(cos(radians(" + req.query.latitude + 
                   ")) * cos(radians(latitude)) * cos(radians(" + req.query.longitude + 
                   ") - radians(longitude)) + sin(radians(" + req.query.latitude + 
                   ")) * sin(radians(latitude)))"),'distance']],
-      include: [db.Comment, db.Rating],
+      include: [{model: db.Comment,
+                 attributes: []}],
       order: db.sequelize.col('distance'),
       limit: 5
     })
