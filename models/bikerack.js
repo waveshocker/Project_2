@@ -22,7 +22,20 @@ module.exports = function(sequelize, DataTypes) {
       }
     }, {
         freezeTableName: true
-    });  
+    });
+  
+    Bikerack.associate = function(models) {
+      // Associating Author with Posts
+      // When an Author is deleted, also delete any associated Posts
+      Bikerack.hasMany(models.Comment, {
+        onDelete: "cascade"
+      });
+
+      Bikerack.hasMany(models.Rating, {
+        onDelete: "cascade"
+      });
+
+    };
  
     return Bikerack;
   };

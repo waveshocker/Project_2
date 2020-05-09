@@ -2,7 +2,8 @@ $(document).ready(function() {
   // This file just does a GET request to figure out which user is logged in
   // and updates the HTML on the page
   $.get("/api/user_data").then(function(data) {
-    $(".member-name").text(data.email);
+    $(".member-name").text(data.email);  
+
   });
 });
 
@@ -122,3 +123,14 @@ function initMap() {
     map.fitBounds(bounds);
   });
 }
+
+//Sample on how to search by longitude and latitude
+var sampleLocation = {
+  longitude: -79.3811,
+  latitude: 43.6591
+};
+
+$.get("/api/search_results", sampleLocation)
+  .then(function(data) {
+    console.log(data)
+  })  
