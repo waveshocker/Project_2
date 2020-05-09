@@ -5,16 +5,28 @@ module.exports = function(app) {
   app.get("/api/search_results", (req, res) => {
     //require request pass in latitude as lat and longitude as lng      
     db.Bikerack.findAll({
-      attributes: ['_id', 'address', 'bike_capacity', 'longitude', 'latitude',
-                  [db.sequelize.fn('COUNT', db.sequelize.col('Comments.comment')), 'CommentCount'],
+      attributes: ['_id', 'address', 'bike_capacity', 'longitude', 'latitude',                  
                   [db.sequelize.literal("6371 * acos(cos(radians(" + req.query.latitude + 
                   ")) * cos(radians(latitude)) * cos(radians(" + req.query.longitude + 
                   ") - radians(longitude)) + sin(radians(" + req.query.latitude + 
                   ")) * sin(radians(latitude)))"),'distance']],
-      include: [{model: db.Comment,
-                 attributes: []}],
+      include: [db.Comment, db.Rating],
       order: db.sequelize.col('distance'),
       limit: 5
+    })
+      .then((result) => res.send(result))
+      .catch((err) => {
+        console.log('There was an error querying bikerack', JSON.stringify(err))
+        return res.send(err)
+      });
+  });
+
+  app.get("/api/parkinglocation", (req, res) => {
+    db.Bikerack.findOne({
+      where: {
+        id: req.query.BikerackId
+      },
+      include: [db.Comment, db.Rating]
     })
       .then((result) => res.send(result))
       .catch((err) => {
