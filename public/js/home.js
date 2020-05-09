@@ -128,7 +128,7 @@ var sampleLocation = {
   latitude: 43.6591
 };
 
-// submitLocation(sampleLocation);
+submitLocation(sampleLocation);
 
 function submitLocation(data) {
   $.get("/api/search_results", data)
@@ -172,7 +172,7 @@ var sampleBikeID = {
 
 //pull data for bike parking location
 
-pullBikeRating(sampleBikeID);
+// pullBikeRating(sampleBikeID);
 
 function pullBikeRating(data){
   $.get("/api/parkinglocation", data)
