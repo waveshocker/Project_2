@@ -21,11 +21,12 @@ module.exports = function(app) {
       });
   });
 
-  app.post("/api/comments", (req, res) => {  
+  app.post("/api/comments", (req, res) => {
+    console.log(req.body);  
     db.Comment.create(req.body)
-      .then((data) => res.send(data))
+      .then((res) => res.send(res))
       .catch((err) => {
-        console.log('***There was an error creating a contact', JSON.stringify(contact))
+        console.log('***There was an error creating a comment', JSON.stringify(res))
         return res.status(400).send(err)
       })
   });
@@ -34,7 +35,7 @@ module.exports = function(app) {
     db.Rating.create(req.body)
       .then((data) => res.send(data))
       .catch((err) => {
-        console.log('***There was an error creating a contact', JSON.stringify(contact))
+        console.log('***There was an error creating a rating', JSON.stringify(data))
         return res.status(400).send(err)
       })
   });

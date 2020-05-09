@@ -101,4 +101,24 @@ var sampleLocation = {
 $.get("/api/search_results", sampleLocation)
   .then(function(data) {
     console.log(data)
-  })  
+  })
+
+//Sample on how to post comment
+
+var sampleComment = {
+  comment: "It's Okay",
+  BikerackID: 2,
+  UserID: 3
+};
+
+$.post("/api/comments", sampleComment, function() {
+  window.location.href = "/home";
+});
+
+//Sample on how to post rating
+
+var sampleComment = {
+  rating: 2,
+  BikerackID: 2,
+  UserID: 3
+}
