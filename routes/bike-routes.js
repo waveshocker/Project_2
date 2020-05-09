@@ -22,22 +22,27 @@ module.exports = function(app) {
   });
 
   app.post("/api/comments", (req, res) => {
-    console.log(req.body);  
-    db.Comment.create(req.body)
-      .then((res) => res.send(res))
-      .catch((err) => {
-        console.log('***There was an error creating a comment', JSON.stringify(res))
-        return res.status(400).send(err)
-      })
+    console.log(req.body); 
+    db.Comment.create({
+      comment: req.body.comment,
+      BikerackId: req.body.BikerackId,
+      UserId: req.body.UserId
+    })
+      .then(function(results){
+        res.json(results);
+      }); 
   });
 
-  app.post("/api/ratings", (req, res) => {  
-    db.Rating.create(req.body)
-      .then((data) => res.send(data))
-      .catch((err) => {
-        console.log('***There was an error creating a rating', JSON.stringify(data))
-        return res.status(400).send(err)
-      })
+  app.post("/api/rating", (req, res) => {
+    console.log(req.body); 
+    db.Rating.create({
+      Rating: req.body.Rating,
+      BikerackId: req.body.BikerackId,
+      UserId: req.body.UserId
+    })
+      .then(function(results){
+        res.json(results);
+      }); 
   });
 
   // app.delete('/api/contacts/:id', (req, res) => {
