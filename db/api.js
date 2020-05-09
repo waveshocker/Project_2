@@ -46,39 +46,54 @@ https.get(`https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action/datastor
 })
 });
 
-// get the package information again
-getPackage.then(package => {
-// get the datastore resources for the package
-let datastoreResources = package["resources"].filter(r => r.datastore_active);
+// // get the package information again
+// getPackage.then(package => {
+
+// // get the datastore resources for the package
+// let datastoreResources = package["resources"].filter(r => r.datastore_active);
+// db.sequelize.sync({ force: false });
+
+// // retrieve the first datastore resource as an example
+// getDatastoreResource(datastoreResources[0])
+//     .then(resource => {
+//         // this is the actual data of the resource
+//         // console.log(resource)
+//         //log api data into database      
+
+//         for(i=0; i < resource.length; i++) {
+//             db.Bikerack.findOrCreate({
+//                 where: {
+//                 _id: resource[i]._id,
+//                 address: resource[i].ADDRESS_FULL,
+//                 bike_capacity: resource[i].BICYCLE_CAPACITY,
+//                 longitude: resource[i].LONGITUDE,
+//                 latitude: resource[i].LATITUDE
+//             }, defaults: {
+//                 _id: resource[i]._id,
+//                 address: resource[i].ADDRESS_FULL,
+//                 bike_capacity: resource[i].BICYCLE_CAPACITY,
+//                 longitude: resource[i].LONGITUDE,
+//                 latitude: resource[i].LATITUDE
+//             }});
+//         }
+//     })
+//     .catch(error => {
+//         console.error(error);
+//     })
+// }).catch(error => {
+// console.error(error);
+// })
+
 db.sequelize.sync({ force: false });
 
-// retrieve the first datastore resource as an example
-getDatastoreResource(datastoreResources[0])
-    .then(resource => {
-        // this is the actual data of the resource
-        // console.log(resource)
-        //log api data into database      
+console.log(db.Bikerack.findAll({
+    attributes: ['_id', 'address', 'bike_capacity', [db.sequelize.literal("6371 * acos(cos(radians(" + -79.3811 + 
+                ")) * cos(radians(latitude)) * cos(radians(" + 43.659 + 
+                ") - radians(longitude)) + sin(radians(" + 79.3811 + 
+                ")) * sin(radians(latitude)))"),'distance']],
+    include: [db.Comment, db.Rating],            
+    order: db.sequelize.col('distance'),
+    limit: 5
+    })
+    );
 
-        for(i=0; i < resource.length; i++) {
-            db.Bikerack.findOrCreate({
-                where: {
-                _id: resource[i]._id,
-                address: resource[i].ADDRESS_FULL,
-                bike_capacity: resource[i].BICYCLE_CAPACITY,
-                longitude: resource[i].LONGITUDE,
-                latitude: resource[i].LATITUDE
-            }, defaults: {
-                _id: resource[i]._id,
-                address: resource[i].ADDRESS_FULL,
-                bike_capacity: resource[i].BICYCLE_CAPACITY,
-                longitude: resource[i].LONGITUDE,
-                latitude: resource[i].LATITUDE
-            }});
-        }
-    })
-    .catch(error => {
-        console.error(error);
-    })
-}).catch(error => {
-console.error(error);
-})

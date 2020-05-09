@@ -1,0 +1,66 @@
+// server.js
+const db = require('../models');
+
+module.exports = function(app) {
+  app.get("/api/search_results", (req, res) => {
+    //require request pass in latitude as lat and longitude as lng      
+    db.Bikerack.findAll({
+      attributes: ['_id', 'address', 'bike_capacity', 
+                  [db.sequelize.literal("6371 * acos(cos(radians(" + req.query.latitude + 
+                  ")) * cos(radians(latitude)) * cos(radians(" + req.query.longitude + 
+                  ") - radians(longitude)) + sin(radians(" + req.query.latitude + 
+                  ")) * sin(radians(latitude)))"),'distance']],
+      include: [db.Comment, db.Rating],
+      order: db.sequelize.col('distance'),
+      limit: 5
+    })
+      .then((result) => res.send(result))
+      .catch((err) => {
+        console.log('There was an error querying bikerack', JSON.stringify(err))
+        return res.send(err)
+      });
+  });
+
+  app.post("/api/comments", (req, res) => {  
+    db.Comment.create(req.body)
+      .then((data) => res.send(data))
+      .catch((err) => {
+        console.log('***There was an error creating a contact', JSON.stringify(contact))
+        return res.status(400).send(err)
+      })
+  });
+
+  app.post("/api/ratings", (req, res) => {  
+    db.Rating.create(req.body)
+      .then((data) => res.send(data))
+      .catch((err) => {
+        console.log('***There was an error creating a contact', JSON.stringify(contact))
+        return res.status(400).send(err)
+      })
+  });
+
+  // app.delete('/api/contacts/:id', (req, res) => {
+  //   const id = parseInt(req.params.id)
+  //   return db.Contact.findById(id)
+  //     .then((contact) => contact.destroy({ force: true }))
+  //     .then(() => res.send({ id }))
+  //     .catch((err) => {
+  //       console.log('***Error deleting contact', JSON.stringify(err))
+  //       res.status(400).send(err)
+  //     })
+  // });
+
+  // app.put('/api/contacts/:id', (req, res) => {
+  //   const id = parseInt(req.params.id)
+  //   return db.Contact.findById(id)
+  //   .then((contact) => {
+  //     const { firstName, lastName, phone } = req.body
+  //     return contact.update({ firstName, lastName, phone })
+  //       .then(() => res.send(contact))
+  //       .catch((err) => {
+  //         console.log('***Error updating contact', JSON.stringify(err))
+  //         res.status(400).send(err)
+  //       })
+  //   })
+  // });
+}

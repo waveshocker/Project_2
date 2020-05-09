@@ -3,6 +3,16 @@ $(document).ready(function() {
   // and updates the HTML on the page
   $.get("/api/user_data").then(function(data) {
     $(".member-name").text(data.email);
+  
+  var sampleLocation = {
+    longitude: -79.3811,
+    latitude: 43.6591
+  };
+
+  $.get("/api/search_results", sampleLocation)
+    .then(function(data) {
+      console.log(data)
+    })  
   });
 });
 
