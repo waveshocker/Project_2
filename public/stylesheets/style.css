@@ -4,15 +4,14 @@ form.login {
 }
 
 .top-bar{
-  box-shadow: 5px 10px #888888;
-  z-index: 5;
+  z-index: 1;
 }
 
 #pac-input{
-  width: 30%;
-  margin-top: 11px;
+  width: 500px;
+  margin-left: 15px;
+  margin-top: 15px;
 }
-
 
 
 #map{

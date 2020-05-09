@@ -33,8 +33,15 @@ function getContentString(address, bike_capacity, rating, comment_count){
   `
 }
 
-function addBikeRackMarkers(map){
-  //ajax call here
+function addBikeRackMarkers(map, location, bounds){
+  console.log(location)
+/*
+
+  $.get("/api/search_results", location)
+    .then(function(data) {
+      console.log(data)
+    })
+*/
 
   var infowindow = new google.maps.InfoWindow({
     content: getContentString("123 Test St.",8,3.5,15)
@@ -58,7 +65,8 @@ function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     center: loc,
     zoom: 14,
-    mapTypeId: 'roadmap'
+    mapTypeId: 'roadmap',
+    disableDefaultUI: true
   });
 
   // Create the search box and link it to the UI element.
@@ -110,15 +118,15 @@ function initMap() {
         position: place.geometry.location
       }));
 
-      // Add custom markets
-      addBikeRackMarkers(map)
-
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(place.geometry.viewport);
       } else {
         bounds.extend(place.geometry.location);
       }
+
+        // Add custom markets
+        addBikeRackMarkers(map, place, bounds)
     });
     map.fitBounds(bounds);
   });
