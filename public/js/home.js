@@ -141,7 +141,7 @@ function submitLocation(data) {
 var sampleComment = {
   comment: "It's Okay",
   BikerackId: 2,
-  UserId: 3
+  UserId: 1
 };
 
 // submitComment(sampleComment);
@@ -156,12 +156,27 @@ function submitComment(data){
 var sampleRating = {
   Rating: 3,
   BikerackId: 2,
-  UserId: 3
+  UserId: 1
 };
 
-// submitRating(sampleRating);
+//submitRating(sampleRating);
 
 function submitRating(data){
   $.post("/api/rating", data, function() {    
     })
 };
+
+var sampleBikeID = {
+  BikerackId: 2
+};
+
+//pull data for bike parking location
+
+// pullBikeRating(sampleBikeID);
+
+function pullBikeRating(data){
+  $.get("/api/parkinglocation", data)
+  .then(function(results){
+    console.log(results)
+  });
+}
