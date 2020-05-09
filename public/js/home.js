@@ -7,8 +7,6 @@ $(document).ready(function() {
   });
 });
 
-
-
 const loc = {lat: 43.6453473, lng: -79.4296353}
 
 function setCurrentPosition(position) {
@@ -130,27 +128,40 @@ var sampleLocation = {
   latitude: 43.6591
 };
 
-$.get("/api/search_results", sampleLocation)
-  .then(function(data) {
-    console.log(data)
-  })
+submitLocation(sampleLocation);
 
+function submitLocation(data) {
+  $.get("/api/search_results", data)
+    .then(function(results) {
+      console.log(results)
+    })
+};
 //Sample on how to post comment
 
 var sampleComment = {
   comment: "It's Okay",
-  BikerackID: 2,
-  UserID: 3
+  BikerackId: 2,
+  UserId: 3
 };
 
-$.post("/api/comments", sampleComment, function() {
-  window.location.href = "/home";
-});
+// submitComment(sampleComment);
+
+function submitComment(data){
+  $.post("/api/comments", data, function() {    
+    })
+};
 
 //Sample on how to post rating
 
-var sampleComment = {
-  rating: 2,
-  BikerackID: 2,
-  UserID: 3
-}
+var sampleRating = {
+  Rating: 3,
+  BikerackId: 2,
+  UserId: 3
+};
+
+// submitRating(sampleRating);
+
+function submitRating(data){
+  $.post("/api/rating", data, function() {    
+    })
+};
