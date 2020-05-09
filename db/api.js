@@ -56,10 +56,6 @@ db.sequelize.sync({ force: false });
 // retrieve the first datastore resource as an example
 getDatastoreResource(datastoreResources[0])
     .then(resource => {
-        // this is the actual data of the resource
-        // console.log(resource)
-        //log api data into database      
-
         for(i=0; i < resource.length; i++) {
             db.Bikerack.findOrCreate({
                 where: {
@@ -83,7 +79,5 @@ getDatastoreResource(datastoreResources[0])
 }).catch(error => {
 console.error(error);
 })
-
-db.sequelize.sync({ force: false });
 
 
