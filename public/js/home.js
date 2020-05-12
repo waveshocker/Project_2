@@ -1,18 +1,30 @@
 $(document).foundation();
 
-$(document).ready(function() {
+let bike_rack = null
+let myRating = 0;
 
+$('#submitReview').click(function() {
+    comment = $('#comment').val()
+    console.log(bike_rack._id, myRating, comment)
 
+    commentObj = {
 
+    }
+
+    $.post("/api/comments", commentObj, function() {
+    })
+
+    $.post("/api/rating", ratingObj, function() {
+    })
 });
 
-// Modal Functions
 
+// Modal Functions
 function populateModal(id){
     bike_rack = search_results.filter(result => result._id == id)[0]
-
+    console.log(bike_rack)
+    myRating = 3
     $('#modal-title').text(`Enter Review for ${bike_rack.address}`)
-
 }
 
 $('.edit-star').mouseover(function() {
@@ -22,6 +34,7 @@ $('.edit-star').mouseover(function() {
     $('.edit-star').each(function(){
         let star = $(this)
         let rating = $(this).data('rating')
+        myRating = parseInt(rating)
         let classNames = $(this).attr('class').split(' ')
 
         if(rating <= selectedRating && classNames.includes('far')){
@@ -234,6 +247,8 @@ var sampleComment = {
 function submitComment(data){
   $.post("/api/comments", data, function() {    
     })
+      $.post("/api/rating", data, function() {
+        })
 };
 
 //Sample on how to post rating

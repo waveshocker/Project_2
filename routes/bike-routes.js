@@ -3,7 +3,7 @@ const db = require('../models');
 
 module.exports = function(app) {
   app.get("/api/search_results", (req, res) => {
-    //require request pass in latitude as lat and longitude as lng      
+    //require request pass in latitude as lat and longitude as lng
     db.Bikerack.findAll({
       attributes: ['_id', 'address', 'bike_capacity', ['longitude', 'lng'], ['latitude', 'lat'],                  
                   [db.sequelize.literal("6371 * acos(cos(radians(" + req.query.latitude + 
