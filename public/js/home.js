@@ -140,8 +140,7 @@ function submitLocation(data) {
 
 var sampleComment = {
   comment: "It's Okay",
-  BikerackId: 2,
-  UserId: 1
+  BikerackId: 2  
 };
 
 // submitComment(sampleComment);
@@ -155,11 +154,10 @@ function submitComment(data){
 
 var sampleRating = {
   Rating: 3,
-  BikerackId: 2,
-  UserId: 1
+  BikerackId: 2
 };
 
-//submitRating(sampleRating);
+submitRating(sampleRating);
 
 function submitRating(data){
   $.post("/api/rating", data, function() {    

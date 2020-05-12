@@ -9,8 +9,10 @@ module.exports = function(app) {
                   [db.sequelize.literal("6371 * acos(cos(radians(" + req.query.latitude + 
                   ")) * cos(radians(latitude)) * cos(radians(" + req.query.longitude + 
                   ") - radians(longitude)) + sin(radians(" + req.query.latitude + 
-                  ")) * sin(radians(latitude)))"),'distance']],
-      include: [db.Comment, db.Rating],
+                  ")) * sin(radians(latitude)))"),'distance'],
+                  [db.sequelize.fn('COUNT', db.sequelize.col('Comments.comment')), 'commentCnt']
+                  ],
+      include: [{model: db.Comment}],
       order: db.sequelize.col('distance'),
       limit: 5
     })
@@ -40,7 +42,7 @@ module.exports = function(app) {
     db.Comment.create({
       comment: req.body.comment,
       BikerackId: req.body.BikerackId,
-      UserId: req.body.UserId
+      UserId: req.user.id
     })
       .then(function(results){
         res.json(results);
@@ -52,7 +54,7 @@ module.exports = function(app) {
     db.Rating.create({
       Rating: req.body.Rating,
       BikerackId: req.body.BikerackId,
-      UserId: req.body.UserId
+      UserId: req.user.id
     })
       .then(function(results){
         res.json(results);
