@@ -12,21 +12,21 @@
 </head>
 
 <body>
-  <div class="top-bar">
-    <div class="top-bar-left">
-      <ul class="dropdown menu" data-dropdown-menu>
-        <li class="menu-text">Home</li>
-      </ul>
+  <div class="grid-container full">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+          <li class="menu-text">Home</li>
+        </ul>
+      </div>
+      <div class="top-bar-right">
+        <ul class="menu">
+          <li><a class="navbar-brand" href="/logout">Logout</a></li>
+          <button type="button" class="button" data-toggle="results-list">Results List</button>
+        </ul>
+      </div>
     </div>
-    <div class="top-bar-right">
-      <ul class="menu">
-        <li><a class="navbar-brand" href="/logout">Logout</a></li>
-        <button type="button" class="button" data-toggle="results-list">Results List</button>
-      </ul>
-    </div>
-  </div>
 
-  <div class="grid-container-fluid">
     <div class="off-canvas-wrapper">
       <div class="off-canvas-absolute position-right" id="results-list"
            data-off-canvas data-transition="overlap">
@@ -40,14 +40,32 @@
 
     <!-- Comments Modal -->
     <div class="reveal" id="commentsModal" data-reveal>
-      <h3>Stop Name</h3>
-      <h5>Star Rating</h5>
-      <a>Add Comment</a>
-      <a>Rate this Spot</a>
+      <form>
+        <span class="display-inline-block">
+          <h4 id="modal-title"></h4>
+        </span>
 
-      <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-      </button>
+        <label>
+          Rating:
+          <span class="rating-input">
+            <i class="fas fa-star edit-star" data-rating="1"></i>
+            <i class="fas fa-star edit-star" data-rating="2"></i>
+            <i class="fas fa-star edit-star" data-rating="3"></i>
+            <i class="far fa-star edit-star" data-rating="4"></i>
+            <i class="far fa-star edit-star" data-rating="5"></i>
+          </span>
+        </label>
+
+        <label>
+          Comments:
+          <textarea id="comment" placeholder="What did you think of this location?"></textarea>
+        </label>
+
+        <button type="button" class="button" id="submitReview">Submit</button>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
     </div>
   </div>
 

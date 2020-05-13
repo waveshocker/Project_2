@@ -3,6 +3,28 @@ form.login {
   margin-top: 50px;
 }
 
+body{
+    width:100vw;
+    height:100vh
+}
+
+.full{
+    height:100%
+}
+
+.off-canvas-wrapper{
+    height:100%
+}
+
+.off-canvas-absolute{
+    width:500px;
+    transform: translateX(500px);
+}
+
+.off-canvas-content{
+    height:100%
+}
+
 .top-bar{
   z-index: 1;
 }
@@ -13,9 +35,17 @@ form.login {
   margin-top: 15px;
 }
 
-
 #map{
-  height: 90vh;
-  width: 100vw;
+  position: relative;
+  height:100%;
   background-color: gray;
+}
+
+.reveal{
+    border-radius: 10px
+}
+
+textarea{
+    resize: none;
+    height: 100px
 }
