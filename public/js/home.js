@@ -5,11 +5,19 @@ let myRating = 0;
 
 $('#submitReview').click(function() {
     comment = $('#comment').val()
-    console.log(bike_rack._id, myRating, comment)
 
     commentObj = {
-
+        BikerackId: bike_rack.id,
+        comment: comment
     }
+
+    ratingObj = {
+        BikerackId: bike_rack.id,
+        Rating: myRating
+    }
+
+    console.log(commentObj)
+    console.log(ratingObj)
 
     $.post("/api/comments", commentObj, function() {
     })
@@ -21,7 +29,7 @@ $('#submitReview').click(function() {
 
 // Modal Functions
 function populateModal(id){
-    bike_rack = search_results.filter(result => result._id == id)[0]
+    bike_rack = search_results.filter(result => result.id == id)[0]
     console.log(bike_rack)
     myRating = 3
     $('#modal-title').text(`Enter Review for ${bike_rack.address}`)
@@ -137,7 +145,7 @@ function addBikeRackMarkers(map, markets, searched_location, bounds){
               // Generate marker
               marker.addListener('click', function() {
 
-                infowindow.setContent(getContentString(result._id, result.address,8,rating,15))
+                infowindow.setContent(getContentString(result.id, result.address,8,rating,15))
                 // Attach marker to marker
                 infowindow.open(map, marker);
               });
