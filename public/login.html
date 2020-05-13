@@ -12,30 +12,38 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-      </div>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <h2>Login Form</h2>
+  <div class="grid-container">
+    <div class="grid-x margin-x">
+      <div class="cell auto"></div>
+      <div class="cell auto login-card">
         <form class="login">
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="email-input" placeholder="Email">
+          <div class="grid-container">
+            <div class="grid-x margin-x">
+              <h5>Login</h5>
+            </div>
+
+            <div class="grid-x margin-x">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" id="email-input" placeholder="Email">
+            </div>
+
+            <div class="grid-x margin-x">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" id="password-input" placeholder="Password">
+            </div>
+
+            <div class="grid-x grid-padding-x">
+              <div class="medium-6 cell">
+                <button type="submit" class="button small">Login</button>
+              </div>
+              <div class="medium-6 cell">
+                <p>Or sign up <a href="/signup">here</a></p>
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="password-input" placeholder="Password">
-          </div>
-          <button type="submit" class="btn btn-default">Login</button>
         </form>
-        <br />
-        <p>Or sign up <a href="/signup">here</a></p>
       </div>
+      <div class="cell auto"></div>
     </div>
   </div>
 
