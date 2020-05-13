@@ -3,20 +3,70 @@ form.login {
   margin-top: 50px;
 }
 
+body{
+    width:100vw;
+    height:100vh
+}
+
+.full{
+    height:100%
+}
+
+.off-canvas-wrapper{
+    height:100%
+}
+
+.off-canvas-absolute{
+    width:500px;
+    transform: translateX(500px);
+}
+
+.off-canvas-content{
+    height:100%
+}
+
+.results-title{
+    font-size: 1.25rem;
+    margin: 5px, 16px
+}
+
 .top-bar{
-  box-shadow: 5px 10px #888888;
-  z-index: 5;
+  z-index: 1;
 }
 
 #pac-input{
-  width: 30%;
-  margin-top: 11px;
+  width: 500px;
+  margin-left: 15px;
+  margin-top: 15px;
+}
+
+#map{
+  position: relative;
+  height:100%;
+  background-color: gray;
 }
 
 
+.info-address{
+    font-size: 1rem;
+    margin-top: 5px;
+    margin-bottom: 5px
+}
 
-#map{
-  height: 90vh;
-  width: 100vw;
-  background-color: gray;
+.info-comments{
+    margin-top: 2px;
+    margin-left: 15px
+}
+
+.info-capacity{
+    margin-top: 15px
+}
+
+.reveal{
+    border-radius: 10px
+}
+
+textarea{
+    resize: none;
+    height: 100px
 }
