@@ -4,8 +4,20 @@ form.login {
 }
 
 body{
+    background-image: url("../images/background.png");
+}
+
+body{
     width:100vw;
     height:100vh
+}
+
+.login-card{
+    border-radius: 10px;
+    box-shadow: 5px 5px 40px 5px grey;
+    margin-top: 10%;
+    padding: 20px 15px 5px 15px;
+    background-color: white
 }
 
 .full{
