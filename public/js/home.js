@@ -1,5 +1,7 @@
 $(document).foundation();
 
+const loc = {lat: 43.6453473, lng: -79.4296353}
+let currentInfoWindow = null
 let bike_rack = null
 let myRating = 0;
 
@@ -16,16 +18,35 @@ $('#submitReview').click(function() {
         Rating: myRating
     }
 
-    console.log(commentObj)
-    console.log(ratingObj)
+    console.log(myRating)
 
-    $.post("/api/comments", commentObj, function() {
-    })
+    $.post("/api/comments", commentObj, function(comment_resp) {
+        bike_rack.Comments.push(comment_resp)
 
-    $.post("/api/rating", ratingObj, function() {
+        $.post("/api/rating", ratingObj, function(ratings_resp) {
+            bike_rack.Ratings.push(ratings_resp)
+
+            $('#comment').val('');
+            myRating = 3;
+            $('.edit-star').eq(2).trigger('mouseover')
+            $('#close-modal').trigger('click')
+
+            currentInfoWindow.setContent(getContentString(bike_rack))
+        })
     })
 });
 
+
+function renderResult(result){
+
+return `  <li class="accordion-item" data-accordion-item>
+            <a href="#" class="accordion-title">${result.address}</a>
+            <div class="accordion-content" data-tab-content>
+              <p>Panel 1. Lorem ipsum dolor</p>
+              <a href="#">Nowhere to Go</a>
+            </div>
+          </li>`
+}
 
 // Modal Functions
 function populateModal(id){
@@ -38,11 +59,11 @@ function populateModal(id){
 $('.edit-star').mouseover(function() {
     event.preventDefault()
     const selectedRating = $(this).data('rating')
+    myRating = parseInt(selectedRating)
 
     $('.edit-star').each(function(){
         let star = $(this)
         let rating = $(this).data('rating')
-        myRating = parseInt(rating)
         let classNames = $(this).attr('class').split(' ')
 
         if(rating <= selectedRating && classNames.includes('far')){
@@ -57,11 +78,11 @@ $('.edit-star').mouseover(function() {
     })
 });
 
-
-// Map Functions
-const loc = {lat: 43.6453473, lng: -79.4296353}
-
 function renderStars(rating){
+
+    if(rating == null)
+        return 'No Ratings'
+
     const fullStar = '<i class="fas fa-star"></i>'
     const halfStar = '<i class="fas fa-star-half-alt"></i>'
     const emptyStar = '<i class="far fa-star"></i>'
@@ -87,7 +108,6 @@ function renderStars(rating){
     return stars;
 }
 
-
 function setCurrentPosition(position) {
   loc.lat = position.coords.latitude;
   loc.lng = position.coords.longitude;
@@ -99,22 +119,48 @@ function getCurrentPosition() {
   } 
 }
 
-function getContentString(id, address, bike_capacity, rating, comment_count){
+function showComments(id){
 
-  return `<div class='content'>
-    <h5 class="info-address">${address}</h5>
-    <span class="display-inline-block">
-        ${renderStars(rating)}
-    <span>
-    <p>Capacity: ${bike_capacity}</p>
-    <p>Comments: ${comment_count}</p>
-    <p><button class="button small" data-open="commentsModal" onclick="populateModal(${id});">Add Review</button><p>
-  </div>`
+    $('#results-toggle').trigger('click')
+
+}
+
+
+function getContentString(bikeRack){
+
+    let rating = null
+
+    // Generate random rating for testing
+    if(bikeRack.Ratings.length > 0)
+        rating = bikeRack.Ratings.map(r => parseInt(r.Rating)).reduce(sum)/bikeRack.Ratings.length
+
+    const comment_count = bikeRack.Comments.length
+
+    return `<div class='info-container'>
+        <h5 class="info-address">${bikeRack.address}</h5>
+        <span class="display-inline-block">
+            ${renderStars(rating)}
+            ${comment_count > 0 ?
+            `<span class="display-inline-block">
+                <a class="info-comments" href="javascript:showComments(${bikeRack.id})">
+                    <i class="far fa-comment"></i>
+                    ${comment_count}
+                </a>
+            </span>` : ''
+            }
+        <span>
+        <p class="info-capacity">Capacity: ${bikeRack.bike_capacity}</p>
+        <p><button class="button small" data-open="commentsModal" onclick="populateModal(${bikeRack.id});">Add Review</button><p>
+        </div>`
 }
 
 let search_results = []
 
-function addBikeRackMarkers(map, markets, searched_location, bounds){
+function sum(total, value){
+   return total + value
+}
+
+function addResults(map, markets, searched_location, bounds){
 
     translated_location = {
         latitude: searched_location.lat(),
@@ -126,14 +172,15 @@ function addBikeRackMarkers(map, markets, searched_location, bounds){
 
         // Make all markers share a single InfoWindow
         const infowindow = new google.maps.InfoWindow()
+        search_results = results
+
+        resultsListEl = $('#results-list')
+        resultsListEl.empty()
 
         // Create a marker for each parking spot.
         results.forEach(result => {
 
-            search_results = results
-
-            // Generate random rating for testing
-            let rating = 4*Math.random()+1
+            resultsListEl.append(renderResult(result))
 
             // Add map market and info window for each spot
             let marker = new google.maps.Marker({
@@ -144,8 +191,9 @@ function addBikeRackMarkers(map, markets, searched_location, bounds){
 
               // Generate marker
               marker.addListener('click', function() {
-
-                infowindow.setContent(getContentString(result.id, result.address,8,rating,15))
+                currentInfoWindow = infowindow
+                infowindow.setContent(
+                getContentString(result))
                 // Attach marker to marker
                 infowindow.open(map, marker);
               });
@@ -222,8 +270,7 @@ function initMap() {
   }
 
     // Add custom markets
-    addBikeRackMarkers(map, markers, place.geometry.location, bounds)
-
+    addResults(map, markers, place.geometry.location, bounds)
     map.fitBounds(bounds);
   });
 }

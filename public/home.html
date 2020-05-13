@@ -22,15 +22,18 @@
       <div class="top-bar-right">
         <ul class="menu">
           <li><a class="navbar-brand" href="/logout">Logout</a></li>
-          <button type="button" class="button" data-toggle="results-list">Results List</button>
+          <button type="button" class="button" id="results-toggle" data-toggle="off-canvas">Results List</button>
         </ul>
       </div>
     </div>
 
     <div class="off-canvas-wrapper">
-      <div class="off-canvas-absolute position-right" id="results-list"
+      <div class="off-canvas-absolute position-right" id="off-canvas"
            data-off-canvas data-transition="overlap">
-        <h4>Results</h4>
+        <div>
+          <ul class="accordion" id="results-list" data-accordion>
+          </ul>
+        </div>
       </div>
       <div class="off-canvas-content" style="min-height: 300px;" data-off-canvas-content>
         <input id="pac-input" class="controls" type="text" placeholder="Enter You Destination">
@@ -48,11 +51,11 @@
         <label>
           Rating:
           <span class="rating-input">
-            <i class="fas fa-star edit-star" data-rating="1"></i>
-            <i class="fas fa-star edit-star" data-rating="2"></i>
-            <i class="fas fa-star edit-star" data-rating="3"></i>
-            <i class="far fa-star edit-star" data-rating="4"></i>
-            <i class="far fa-star edit-star" data-rating="5"></i>
+            <i class="fas fa-star edit-star fa-lg" data-rating="1"></i>
+            <i class="fas fa-star edit-star fa-lg" data-rating="2"></i>
+            <i class="fas fa-star edit-star fa-lg" data-rating="3"></i>
+            <i class="far fa-star edit-star fa-lg" data-rating="4"></i>
+            <i class="far fa-star edit-star fa-lg" data-rating="5"></i>
           </span>
         </label>
 
@@ -63,7 +66,7 @@
 
         <button type="button" class="button" id="submitReview">Submit</button>
         </form>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
+        <button class="close-button" id="close-modal" data-close aria-label="Close modal" type="button">
           <span aria-hidden="true">&times;</span>
         </button>
     </div>
