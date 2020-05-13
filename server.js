@@ -1,6 +1,9 @@
 // Requiring necessary npm packages
 var express = require("express");
 var session = require("express-session");
+var passport = require('passport')
+var bodyParser = require('body-parser')
+var exphbs = require('express-handlebars')
 // Requiring passport as we've configured it
 var passport = require("./config/passport");
 
@@ -103,3 +106,67 @@ getPackage.then(package => {
   }).catch(error => {
   console.error(error);
   })
+
+
+
+
+
+
+  //For BodyParser
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
+
+// For Passport
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true
+})); 
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+
+app.set('views', './views')
+app.engine('hbs', exphbs({
+    extname: '.hbs'
+}));
+app.set('view engine', '.hbs');
+ 
+ 
+ 
+app.get('/', function(req, res) {
+ 
+    res.send('Welcome!');
+ 
+});
+
+var models = require("./models");
+
+var authRoute = require('./routes/auth.js')(app);
+
+require('./config/passport.js')(passport, models.user);
+
+models.sequelize.sync().then(function() {
+ 
+    console.log('Nice! Database looks fine')
+ 
+ 
+}).catch(function(err) {
+ 
+    console.log(err, "Something went wrong with the Database Update!")
+ 
+});
+ 
+ 
+app.listen(5000, function(err) {
+ 
+    if (!err)
+ 
+        console.log("Site is live");
+         
+    else console.log(err)
+ 
+});
