@@ -9,10 +9,9 @@ module.exports = function(app) {
                   [db.sequelize.literal("6371 * acos(cos(radians(" + req.query.latitude + 
                   ")) * cos(radians(latitude)) * cos(radians(" + req.query.longitude + 
                   ") - radians(longitude)) + sin(radians(" + req.query.latitude + 
-                  ")) * sin(radians(latitude)))"),'distance'],
-                  [db.sequelize.fn('COUNT', db.sequelize.col('Comments.comment')), 'commentCnt']
+                  ")) * sin(radians(latitude)))"),'distance']               
                   ],
-      include: [{model: db.Comment}],
+      include: [db.Comment, db.Rating],
       order: db.sequelize.col('distance'),
       limit: 5
     })
