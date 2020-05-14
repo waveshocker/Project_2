@@ -8,8 +8,10 @@ body{
 }
 
 body{
-    width:100vw;
-    height:100vh
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
 }
 
 .login-card{
@@ -17,7 +19,8 @@ body{
     box-shadow: 5px 5px 40px 5px grey;
     margin-top: 10%;
     padding: 20px 15px 5px 15px;
-    background-color: white
+    background-color: white;
+    min-width: 300px;
 }
 
 .signup-link{
@@ -25,8 +28,10 @@ body{
     text-align: right
 }
 
-.full{
-    height:100%
+.nav{
+    height: 50px;
+    background-color: lightgray;
+    padding-top: 10px;
 }
 
 .off-canvas-wrapper{
@@ -85,14 +90,12 @@ body{
 }
 
 #pac-input{
-  width: 500px;
-  margin-left: 15px;
-  margin-top: 15px;
+  max-width: 500px;
+  margin: 15px;
 }
 
 #map{
-  position: relative;
-  height:100%;
+  height: 100vh;
   background-color: gray;
 }
 
