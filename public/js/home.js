@@ -18,13 +18,11 @@ $('#submitReview').click(function() {
         Rating: myRating
     }
 
-    console.log(myRating)
-
     $.post("/api/comments", commentObj, function(comment_resp) {
         bike_rack.Comments.push(comment_resp)
 
-        $.post("/api/rating", ratingObj, function(ratings_resp) {
-            bike_rack.Ratings.push(ratings_resp)
+        $.post("/api/rating", ratingObj, function(rating_resp) {
+            bike_rack.Ratings.push(rating_resp)
 
             $('#comment').val('');
             myRating = 3;
@@ -32,26 +30,14 @@ $('#submitReview').click(function() {
             $('#close-modal').trigger('click')
 
             currentInfoWindow.setContent(getContentString(bike_rack))
+            $('#comments-list').prepend(renderComment(rating_resp, comment_resp))
         })
     })
 });
 
-
-function renderResult(result){
-
-return `  <li class="accordion-item" data-accordion-item>
-            <a href="#" class="accordion-title">${result.address}</a>
-            <div class="accordion-content" data-tab-content>
-              <p>Panel 1. Lorem ipsum dolor</p>
-              <a href="#">Nowhere to Go</a>
-            </div>
-          </li>`
-}
-
 // Modal Functions
 function populateModal(id){
     bike_rack = search_results.filter(result => result.id == id)[0]
-    console.log(bike_rack)
     myRating = 3
     $('#modal-title').text(`Enter Review for ${bike_rack.address}`)
 }
@@ -119,13 +105,6 @@ function getCurrentPosition() {
   } 
 }
 
-function showComments(id){
-
-    $('#results-toggle').trigger('click')
-
-}
-
-
 function getContentString(bikeRack){
 
     let rating = null
@@ -142,7 +121,7 @@ function getContentString(bikeRack){
             ${renderStars(rating)}
             ${comment_count > 0 ?
             `<span class="display-inline-block">
-                <a class="info-comments" href="javascript:showComments(${bikeRack.id})">
+                <a class="info-comments" data-toggle="off-canvas">
                     <i class="far fa-comment"></i>
                     ${comment_count}
                 </a>
@@ -160,7 +139,39 @@ function sum(total, value){
    return total + value
 }
 
-function addResults(map, markets, searched_location, bounds){
+function renderComments(result){
+
+    $('#comments-title').text(result.address + ' Reviews')
+
+    commentsContainer = $('#comments-list')
+    commentsContainer.empty()
+
+    let i = 0
+    result.Comments.forEach(comment => {
+        rating = result.Ratings[i]
+        commentsContainer.append(renderComment(rating, comment))
+        i++
+    })
+}
+
+function renderComment(rating, comment){
+
+return `<div class="review-card">
+  <div class="card-divider review-header">
+    <span class="display-inline-block">
+        User ID:
+        ${comment.UserId}
+        ${renderStars(parseInt(rating.Rating))}
+    </span>
+  </div>
+  <div class="card-section review-body">
+    <p>${comment.comment}</p>
+  </div>
+</div>`
+
+}
+
+function addResults(map, markers, searched_location, bounds){
 
     translated_location = {
         latitude: searched_location.lat(),
@@ -174,13 +185,8 @@ function addResults(map, markets, searched_location, bounds){
         const infowindow = new google.maps.InfoWindow()
         search_results = results
 
-        resultsListEl = $('#results-list')
-        resultsListEl.empty()
-
         // Create a marker for each parking spot.
         results.forEach(result => {
-
-            resultsListEl.append(renderResult(result))
 
             // Add map market and info window for each spot
             let marker = new google.maps.Marker({
@@ -189,8 +195,13 @@ function addResults(map, markets, searched_location, bounds){
                 title: result.address
               });
 
+             markers.push(marker)
+
+             bounds.extend(marker.getPosition());
+
               // Generate marker
               marker.addListener('click', function() {
+                renderComments(result)
                 currentInfoWindow = infowindow
                 infowindow.setContent(
                 getContentString(result))
@@ -223,7 +234,7 @@ function initMap() {
     searchBox.setBounds(map.getBounds());
   });
 
-  const markers = [];
+  let markers = [];
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
   searchBox.addListener('places_changed', function() {
@@ -236,6 +247,8 @@ function initMap() {
     markers.forEach(function(marker) {
       marker.setMap(null);
     });
+
+    markers = []
 
     // For each place, get the icon, name and location.
     const bounds = new google.maps.LatLngBounds();
@@ -271,65 +284,11 @@ function initMap() {
 
     // Add custom markets
     addResults(map, markers, place.geometry.location, bounds)
+
+    markers.forEach(marker => {
+        bounds.extend( marker.getPosition() );
+    });
+
     map.fitBounds(bounds);
-  });
-}
-
-//Sample on how to search by longitude and latitude
-var sampleLocation = {
-  longitude: -79.3811,
-  latitude: 43.6591
-};
-
-submitLocation(sampleLocation);
-
-function submitLocation(data) {
-  $.get("/api/search_results", data)
-    .then(function(results) {
-      console.log(results)
-    })
-};
-//Sample on how to post comment
-
-var sampleComment = {
-  comment: "It's Okay",
-  BikerackId: 2  
-};
-
-// submitComment(sampleComment);
-
-function submitComment(data){
-  $.post("/api/comments", data, function() {    
-    })
-      $.post("/api/rating", data, function() {
-        })
-};
-
-//Sample on how to post rating
-
-var sampleRating = {
-  Rating: 3,
-  BikerackId: 2
-};
-
-submitRating(sampleRating);
-
-function submitRating(data){
-  $.post("/api/rating", data, function() {    
-    })
-};
-
-var sampleBikeID = {
-  BikerackId: 2
-};
-
-//pull data for bike parking location
-
-// pullBikeRating(sampleBikeID);
-
-function pullBikeRating(data){
-  $.get("/api/parkinglocation", data)
-  .then(function(results){
-    console.log(results)
   });
 }
