@@ -20,6 +20,11 @@ body{
     background-color: white
 }
 
+.signup-link{
+    margin-top:4px;
+    text-align: right
+}
+
 .full{
     height:100%
 }
@@ -29,21 +34,54 @@ body{
 }
 
 .off-canvas-absolute{
-    width:500px;
-    transform: translateX(500px);
+    background-color: white
+}
+
+.off-canvas-header{
+    padding: 10px;
+    background-color: gray;
+}
+
+.off-canvas-absolute{
+    width:350px;
+    transform: translateX(350px);
 }
 
 .off-canvas-content{
     height:100%
 }
 
-.results-title{
-    font-size: 1.25rem;
-    margin: 5px, 16px
+.comments-title{
+    margin: 0
+
+}
+
+.comments-list{
+    padding-top: 10px;
+}
+
+.review-card{
+    box-shadow: 2px 2px 5px 1px grey;
+    margin-right: 10px;
+    border-radius: 5px;
+    background: blue;
+    margin-bottom: 10px;
+}
+
+.review-header{
+    font-size: 1rem;
+    padding: 5px 15px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.review-body{
+    background: white;
+    padding: 5px 15px;
+    border-radius: 0px 0px 5px 5px;
 }
 
 .top-bar{
-  z-index: 1;
+    z-index: 1;
 }
 
 #pac-input{

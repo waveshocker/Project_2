@@ -20,10 +20,7 @@
         </ul>
       </div>
       <div class="top-bar-right">
-        <ul class="menu">
-          <li><a class="navbar-brand" href="/logout">Logout</a></li>
-          <button type="button" class="button" id="results-toggle" data-toggle="off-canvas">Results List</button>
-        </ul>
+          <a class="navbar-brand" href="/logout">Logout</a>
       </div>
     </div>
 
@@ -31,7 +28,10 @@
       <div class="off-canvas-absolute position-right" id="off-canvas"
            data-off-canvas data-transition="overlap">
         <div>
-          <ul class="accordion" id="results-list" data-accordion>
+          <div class="off-canvas-header">
+            <h4 id="comments-title"></h4>
+          </div>
+          <ul id="comments-list" class="comments-list" data-accordion>
           </ul>
         </div>
       </div>
