@@ -3,6 +3,14 @@ form.login {
   margin-top: 50px;
 }
 
+a {
+  color: #8a8a8a
+}
+
+a:hover {
+  color: #767676;
+}
+
 body{
     background-image: url("../images/background.png");
 }
@@ -14,9 +22,13 @@ body{
     overflow: hidden;
 }
 
+.primary{
+    background-color: #659DBD;
+}
+
 .login-card{
     border-radius: 10px;
-    box-shadow: 5px 5px 40px 5px grey;
+    box-shadow: 3px 3px 20px 3px black;
     margin-top: 10%;
     padding: 20px 15px 5px 15px;
     background-color: white;
@@ -30,8 +42,14 @@ body{
 
 .nav{
     height: 50px;
-    background-color: lightgray;
-    padding-top: 10px;
+    color: white;
+    padding-top: 13px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.nav-logout{
+    color: white
 }
 
 .off-canvas-wrapper{
@@ -44,7 +62,8 @@ body{
 
 .off-canvas-header{
     padding: 10px;
-    background-color: gray;
+    color: white;
+    background-color: #767676;
 }
 
 .off-canvas-absolute{
@@ -62,6 +81,7 @@ body{
 }
 
 .comments-list{
+    padding-top: 10px;
     padding-top: 10px;
 }
 
@@ -123,3 +143,4 @@ textarea{
     resize: none;
     height: 100px
 }
+

@@ -13,22 +13,24 @@
 
 <body>
   <div class="grid-container full">
-    <div class="grid-x margin-x nav">
-      <div class="cell small-3 text-center">
-          <div class="logo">Home</div>
+    <div class="grid-x margin-x nav primary">
+      <div class="cell small-3 text-left">
+        <span class="logo">
+          <i class="fas fa-bicycle"></i>
+          Home
+          </span>
       </div>
       <div class="cell auto"></div>
-        <div class="cell small-2">
-          <a class="navbar-brand" href="/logout">Logout</a>
-          <div class="medium-3 auto"></div>
-    </div>
+        <div class="cell small-2 text-right">
+          <a class="nav-logout" href="/logout">Logout</a>
+      </div>
     </div>
 
     <div class="off-canvas-wrapper">
       <div class="off-canvas-absolute position-right" id="off-canvas"
            data-off-canvas data-transition="overlap">
         <div>
-          <div class="off-canvas-header">
+          <div class="off-canvas-header secondary">
             <h4 id="comments-title"></h4>
           </div>
           <ul id="comments-list" class="comments-list" data-accordion>
