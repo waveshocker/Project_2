@@ -21,8 +21,8 @@ $('#submitReview').click(function() {
     $.post("/api/comments", commentObj, function(comment_resp) {
         bike_rack.Comments.push(comment_resp)
 
-        $.post("/api/rating", ratingObj, function(ratings_resp) {
-            bike_rack.Ratings.push(ratings_resp)
+        $.post("/api/rating", ratingObj, function(rating_resp) {
+            bike_rack.Ratings.push(rating_resp)
 
             $('#comment').val('');
             myRating = 3;
@@ -30,6 +30,7 @@ $('#submitReview').click(function() {
             $('#close-modal').trigger('click')
 
             currentInfoWindow.setContent(getContentString(bike_rack))
+            $('#comments-list').prepend(renderComment(rating_resp, comment_resp))
         })
     })
 });
@@ -147,7 +148,6 @@ function renderComments(result){
 
     let i = 0
     result.Comments.forEach(comment => {
-        console.log(comment)
         rating = result.Ratings[i]
         commentsContainer.append(renderComment(rating, comment))
         i++
@@ -196,6 +196,8 @@ function addResults(map, markers, searched_location, bounds){
               });
 
              markers.push(marker)
+
+             bounds.extend(marker.getPosition());
 
               // Generate marker
               marker.addListener('click', function() {
@@ -282,14 +284,11 @@ function initMap() {
 
     // Add custom markets
     addResults(map, markers, place.geometry.location, bounds)
+
+    markers.forEach(marker => {
+        bounds.extend( marker.getPosition() );
+    });
+
     map.fitBounds(bounds);
   });
 }
-
-
-function submitComment(data){
-  $.post("/api/comments", data, function() {    
-    })
-      $.post("/api/rating", data, function() {
-        })
-};

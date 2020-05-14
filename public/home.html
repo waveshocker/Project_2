@@ -13,14 +13,16 @@
 
 <body>
   <div class="grid-container full">
-    <div class="top-bar">
-      <div class="top-bar-left">
-        <ul class="dropdown menu" data-dropdown-menu>
-          <li class="menu-text">Home</li>
-        </ul>
+    <div class="grid-x margin-x nav primary">
+      <div class="cell small-3 text-left">
+        <span class="logo">
+          <i class="fas fa-bicycle"></i>
+          Home
+          </span>
       </div>
-      <div class="top-bar-right">
-          <a class="navbar-brand" href="/logout">Logout</a>
+      <div class="cell auto"></div>
+        <div class="cell small-2 text-right">
+          <a class="nav-logout" href="/logout">Logout</a>
       </div>
     </div>
 
@@ -28,7 +30,7 @@
       <div class="off-canvas-absolute position-right" id="off-canvas"
            data-off-canvas data-transition="overlap">
         <div>
-          <div class="off-canvas-header">
+          <div class="off-canvas-header secondary">
             <h4 id="comments-title"></h4>
           </div>
           <ul id="comments-list" class="comments-list" data-accordion>
