@@ -3,21 +3,36 @@ form.login {
   margin-top: 50px;
 }
 
+a {
+  color: #8a8a8a
+}
+
+a:hover {
+  color: #767676;
+}
+
 body{
     background-image: url("../images/background.png");
 }
 
 body{
-    width:100vw;
-    height:100vh
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.primary{
+    background-color: #659DBD;
 }
 
 .login-card{
     border-radius: 10px;
-    box-shadow: 5px 5px 40px 5px grey;
+    box-shadow: 3px 3px 20px 3px black;
     margin-top: 10%;
     padding: 20px 15px 5px 15px;
-    background-color: white
+    background-color: white;
+    min-width: 300px;
 }
 
 .signup-link{
@@ -25,8 +40,16 @@ body{
     text-align: right
 }
 
-.full{
-    height:100%
+.nav{
+    height: 50px;
+    color: white;
+    padding-top: 13px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.nav-logout{
+    color: white
 }
 
 .off-canvas-wrapper{
@@ -39,7 +62,8 @@ body{
 
 .off-canvas-header{
     padding: 10px;
-    background-color: gray;
+    color: white;
+    background-color: #767676;
 }
 
 .off-canvas-absolute{
@@ -57,6 +81,7 @@ body{
 }
 
 .comments-list{
+    padding-top: 10px;
     padding-top: 10px;
 }
 
@@ -85,14 +110,12 @@ body{
 }
 
 #pac-input{
-  width: 500px;
-  margin-left: 15px;
-  margin-top: 15px;
+  max-width: 500px;
+  margin: 15px;
 }
 
 #map{
-  position: relative;
-  height:100%;
+  height: 100vh;
   background-color: gray;
 }
 
@@ -120,3 +143,4 @@ textarea{
     resize: none;
     height: 100px
 }
+
